@@ -1,0 +1,159 @@
+from kivymd.app import MDApp
+from kivy.lang import Builder
+from googletrans import Translator
+from playsound import playsound
+from kivy.core.audio import SoundLoader
+
+translator = Translator() 
+
+kv = """
+ScreenManager:
+    id: screen_manager
+    MDScreen:
+        id: screen_manager
+        name: "basy"
+        FitImage:
+            source: "assets/fon.jpg"
+            pos_hint: {"center_y": 1.2}
+            border_radius: 30
+            radius: [20]
+        MDFlatButton:
+            text: "[color=#FFFFFF]English Learning[/color]"
+            color: 0,0,0,0
+            halign: "center"
+            font_name: "assets\Poppins-Black.ttf"
+            font_size: dp(30)
+            pos_hint: {"center_y": .9}
+            halign: "center"
+        MDGridLayout:
+            size_hint_y:.85
+            cols: 2
+            padding:[dp(10),dp(10),dp(10),dp(10)]
+            spacing:dp(10)
+            MDCard:
+                orientation: "vertical"
+                ripple_behavior: True
+                border_radius: 20
+                radius: [15]
+                on_release: app.translate()
+                Image:
+                    source: "assets/translate.png"
+                MDLabel:
+                    text: "Translate"
+                    font_name: "assets\Poppins-Italic.ttf"
+                    font_size: dp(25)
+                    pos_hint: {"center_x": .5,"center_y": .08}
+                    halign: "center"
+                            
+            MDCard:
+                orientation: "vertical"
+                ripple_behavior: True
+                border_radius: 20
+                radius: [15]
+                Image:
+                    source: "assets/readbook.png"
+                    pos_hint: {"center_y": .555}
+                MDLabel:
+                    text: "Reading"
+                    font_name: "assets\Poppins-Italic.ttf"
+                    font_size: dp(25)
+                    pos_hint: {"center_x": .5,"center_y": .08}
+                    halign: "center"
+                            
+            MDCard:
+                orientation: "vertical"
+                ripple_behavior: True                
+                border_radius: 20
+                radius: [15]
+                Image:
+                    source: "assets/test.png"
+                    pos_hint: {"center_y": .52}
+                MDLabel:
+                    text: "Test"
+                    font_name: "assets\Poppins-Italic.ttf"
+                    font_size: dp(25)
+                    pos_hint: {"center_x": .5,"center_y": .08}
+                    halign: "center"
+                            
+            MDCard:
+                orientation: "vertical"
+                ripple_behavior: True
+                border_radius: 20
+                radius: [15]
+                Image:
+                    source: "assets/grammar.png"
+                    pos_hint: {"center_y": .55}
+                MDLabel:
+                    text: "Grammar"
+                    font_name: "assets\Poppins-Italic.ttf"
+                    font_size: dp(25)
+                    pos_hint: {"center_x": .5,"center_y": .08}
+                    halign: "center"
+
+    MDScreen:
+        name: "translate"
+        MDIconButton:
+            icon: "arrow-left"
+            pos_hint: {"center_y": .95}
+            on_release: app.back_home()
+        MDLabel:
+            text: "Kz"
+            font_name: "assets\Poppins-Black.ttf"
+            font_size: dp(30)
+            pos_hint: {"center_x": .35,"center_y": .95}
+            halign: "center"
+        MDLabel:
+            text: "En"
+            font_name: "assets\Poppins-Black.ttf"
+            font_size: dp(30)
+            pos_hint: {"center_x": .65,"center_y": .95}
+            halign: "center"
+        MDGridLayout:
+            size_hint_y:.85
+            cols: 1
+            padding:[dp(10),dp(10),dp(10),dp(10)]
+            spacing:dp(10)
+            MDCard:
+                TextInput:
+                    id: input_1
+            MDCard:
+                border_radius: 20
+                radius: [15]
+                TextInput:
+                    id: input_2
+                    font_name: "assets\Poppins-Italic.ttf"  
+                    font_size: dp(15)
+                    
+        BoxLayout:
+            MDIconButton:
+                icon: "delete"
+                pos_hint: {"center_y":.46}
+                on_release: app.delete_1()
+            MDIconButton:
+                icon: "send"
+                pos_hint: {"center_y":.46}
+                on_release: app.send()
+            
+
+            
+                    
+"""
+
+class app(MDApp):
+    def build(self):
+        return Builder.load_string(kv)
+    def translate(self):
+        self.root.current = "translate"
+    def back_home(self):
+        self.root.current = "basy"
+    def delete_1(self):
+        self.root.ids.input_1.text = ""
+        self.root.ids.input_2.text = ""
+    def send(self):
+        result = translator.translate(self.root.ids.input_1.text, dest='en')
+        self.root.ids.input_2.text = result.text
+
+app().run()
+
+
+
